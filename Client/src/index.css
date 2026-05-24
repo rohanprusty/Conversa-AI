@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* Z-INDEX SYSTEM REFERENCE
+   - Background image: z-0
+   - Gradient overlays: z-10
+   - Aurora/fog: z-20
+   - Particles: z-30
+   - Main content: z-40
+   - Floating glows: z-50
+   - Navbar: z-100
+   - Modals/dropdowns: z-200
+*/
+
+html,
+body {
+  font-family: 'Inter', sans-serif;
+  background: #040816;
+  color: white;
+  overflow-x: hidden;
+  /* Lenis will handle smooth scroll, but keep this as fallback */
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #040816;
+}
+
+/* Base Accessibility: Keyboard Focus Glow */
+*:focus-visible {
+  outline: 2px solid #22D3EE;
+  outline-offset: 4px;
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+  transition: outline 0.1s, box-shadow 0.1s;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Subtle Noise Texture Overlay */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+
+/* Aurora / Fog Drift Animation - 18s-25s */
+@keyframes auroraDrift {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33% { transform: translate(5%, -5%) scale(1.05) rotate(2deg); }
+  66% { transform: translate(-3%, 3%) scale(0.95) rotate(-1deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+}
+
+.animate-aurora {
+  animation: auroraDrift 22s infinite ease-in-out;
+  will-change: transform;
+}
+
+/* Floating Animation - 6s infinite */
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-floating {
+  animation: floating 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Animated Gradient - Optimized */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  animation: gradientMove 15s ease infinite;
+  will-change: background-position;
+}
+
+/* Shiny Gradient Text */
+@keyframes shiny {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.animate-shiny {
+  animation: shiny 6s linear infinite;
+  will-change: background-position;
+}
+
+/* Liquid Glass with transition tweaks */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+/* Optimize Mobile Blurs */
+@media (max-width: 768px) {
+  .liquid-glass {
+    backdrop-filter: blur(8px);
+  }
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.2),
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* Glow Pulse */
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 20px rgba(0,210,255,0.25); }
+  50% { box-shadow: 0 0 40px rgba(192,38,211,0.45); }
+  100% { box-shadow: 0 0 20px rgba(0,210,255,0.25); }
+}
+
+.animate-glow {
+  animation: glowPulse 4s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+/* Spotlight Hover Card Variables */
+:root {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+}
