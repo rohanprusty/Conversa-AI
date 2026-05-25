@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, animate, useMotionTemplate } from 'framer-motion';
-import { Mic, X, MoreHorizontal } from 'lucide-react';
+import { Mic, X, MoreHorizontal, Sparkles } from 'lucide-react';
 import axios from 'axios';
 
 export default function FloatingAssistant({ agentId }) {
@@ -46,7 +46,15 @@ export default function FloatingAssistant({ agentId }) {
   // Fetch Config
   useEffect(() => {
     if (agentId) {
-      axios.get(`http://localhost:8000/api/assistant/config/${agentId}`)
+      const fetchUrl = `http://localhost:8000/api/assistant/config/${agentId}`;
+      console.log("3. FETCHING FROM:", fetchUrl);
+      axios.get(fetchUrl, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      })
         .then(res => {
           setConfig(res.data);
         })
@@ -85,10 +93,8 @@ export default function FloatingAssistant({ agentId }) {
       };
 
       recognition.onend = () => {
-        if (status === "Listening...") {
-          setStatus("Tap button to Speak");
-          setIsListening(false);
-        }
+        setIsListening(false);
+        setStatus(prev => prev === "Listening..." ? "Tap button to Speak" : prev);
       };
 
       recognitionRef.current = recognition;
@@ -124,20 +130,32 @@ export default function FloatingAssistant({ agentId }) {
   };
 
   const handleAskAI = async (message) => {
+    if (!agentId) {
+        setStatus("Deployment Error: Missing Agent ID.");
+        return;
+    }
+    if (!message || message.trim() === "") {
+        setStatus("Error: Did not hear a message.");
+        return;
+    }
+    
     try {
       const res = await axios.post(`http://localhost:8000/api/assistant/ask`, {
         message,
         agentId
       });
-      const aiResponse = res.data.response;
+      const aiResponse = res.data.aiResponse;
       setAiText(aiResponse);
 
       // Handle navigation logic from original widget
       const navMatch = aiResponse.match(/\[NAVIGATE:(.*?)\]/);
+      const scrollRegex = /\[SCROLL:([^\]]+)\]/;
+      const scrollMatch = aiResponse.match(scrollRegex);
+      
       let cleanedText = aiResponse;
       if (navMatch) {
         const path = navMatch[1].trim();
-        cleanedText = aiResponse.replace(/\[NAVIGATE:.*?\]/g, "");
+        cleanedText = cleanedText.replace(/\[NAVIGATE:.*?\]/g, "");
         if (window.location.pathname !== path) {
           setTimeout(() => {
             window.location.href = path;
@@ -145,11 +163,27 @@ export default function FloatingAssistant({ agentId }) {
         }
       }
 
+      if (scrollMatch) {
+        const extractedId = scrollMatch[1].trim();
+        cleanedText = cleanedText.replace(scrollRegex, "");
+        setTimeout(() => {
+          const targetElement = document.querySelector(extractedId);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetElement.style.transition = 'box-shadow 0.5s';
+            targetElement.style.boxShadow = '0 0 20px #a855f7';
+            setTimeout(() => {
+              targetElement.style.boxShadow = 'none';
+            }, 3000);
+          }
+        }, 100);
+      }
+
       speak(cleanedText);
     } catch (error) {
-      console.error(error);
-      setStatus("Error connecting");
-      setTimeout(() => setStatus("Tap button to Speak"), 3000);
+      console.error("7. FATAL FRONTEND ERROR:", error);
+      const errorMessage = error.response?.data?.message || error.response?.data?.error || "NETWORK ERROR: Backend offline or CORS blocking.";
+      setStatus("ERROR: " + errorMessage);
     }
   };
 
@@ -256,7 +290,10 @@ export default function FloatingAssistant({ agentId }) {
   if (isDuplicate || !initialized) return null;
 
   return (
-    <div className="fixed inset-0 z-[9990] pointer-events-none overflow-hidden">
+    <div 
+      className="fixed inset-0 z-[999999] pointer-events-none overflow-hidden conversa-widget-container"
+      style={{ boxSizing: 'border-box', fontFamily: 'sans-serif', lineHeight: 1.5 }}
+    >
       {/* CTA Bubble outside the orb */}
       <AnimatePresence>
         {!isExpanded && ctaVisible && !isHovered && (
@@ -270,7 +307,7 @@ export default function FloatingAssistant({ agentId }) {
               left: ctaLeft,
               top: ctaTop
             }}
-            className="hidden sm:flex items-center gap-2 bg-[#0B1020]/90 backdrop-blur-md border border-cyan-500/30 text-white px-5 py-3 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.2)] pointer-events-auto"
+            className="hidden sm:flex items-center gap-2 bg-[#0B1020]/90 backdrop-blur-md border border-cyan-500/30 text-white px-5 py-3 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.2)] pointer-events-auto whitespace-nowrap"
           >
             <span className="text-sm font-medium tracking-wide whitespace-nowrap">Let me assist you</span>
             <span className="animate-pulse">✨</span>
@@ -346,7 +383,7 @@ function OrbContent({ onClick, onMouseEnter, onMouseLeave, isSpeaking }) {
          {isSpeaking ? (
            <MoreHorizontal className="w-8 h-8 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse" />
          ) : (
-           <img src="/logo.jpg" alt="Conversa AI" className="w-10 h-10 rounded-full object-cover shadow-[0_0_15px_rgba(34,211,238,0.8)] group-hover:scale-105 transition-transform duration-300" />
+           <Sparkles className="w-10 h-10 p-2.5 text-cyan-300 bg-white/5 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)] group-hover:scale-110 group-hover:text-cyan-200 transition-all duration-300" />
          )}
        </motion.div>
     </motion.div>
@@ -437,11 +474,11 @@ function ExpandedPanel({ onClose, widthMotion, heightMotion, yMotion, saveState,
             <div className="absolute inset-1.5 bg-gradient-to-br from-fuchsia-400 to-cyan-300 rounded-full shadow-[0_0_30px_rgba(192,38,211,0.6)]" />
           </motion.div>
 
-          <h3 className="text-xl font-bold text-white mb-2 tracking-tight text-center">
-            Hello! I'm {config?.assistantName || "Conversa AI"}
+          <h3 id="conversa-agent-name" className="text-xl font-bold text-white mb-2 tracking-tight text-center">
+            Hello! I'm {config?.user?.assistantName || "Conversa AI"}
           </h3>
           <p className="text-sm text-gray-400 text-center mb-6 leading-relaxed max-w-[80%]">
-            Welcome to {config?.businessName || "Conversa"}.<br/>Ask anything about your website.
+            Welcome to {config?.user?.businessName || "Conversa"}.<br/>Ask anything about your website.
           </p>
 
           {/* Conversation Area */}
@@ -472,8 +509,12 @@ function ExpandedPanel({ onClose, widthMotion, heightMotion, yMotion, saveState,
             >
                <div className={`absolute inset-0 bg-gradient-to-r ${isListening ? 'from-red-500/20 to-orange-500/20' : 'from-cyan-500/20 to-purple-500/20'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                <div className="flex items-center gap-3 relative z-10">
-                  <img src="/logo.jpg" alt="Logo" className={`w-6 h-6 rounded-full object-cover shadow-[0_0_10px_rgba(34,211,238,0.5)] ${isListening ? 'animate-pulse' : ''}`} />
-                  <span className={`text-sm font-semibold tracking-wide ${isListening ? 'text-red-50' : 'text-cyan-50'}`}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] ${isListening ? 'animate-pulse text-red-400' : ''}`}>
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="22"></line>
+                  </svg>
+                  <span className={`text-sm font-semibold tracking-wide whitespace-nowrap ${isListening ? 'text-red-50' : 'text-cyan-50'}`}>
                     {isListening ? "Stop Listening" : "Tap to Speak"}
                   </span>
                </div>

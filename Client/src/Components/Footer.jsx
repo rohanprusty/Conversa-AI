@@ -23,13 +23,13 @@ const Footer = () => {
         </div>
 
         <div className="flex gap-6">
-          <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Twitter</a>
-          <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">GitHub</a>
-          <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Discord</a>
+          <a href="https://www.instagram.com/r_o_h_a_n_prusty/" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Instagram</a>
+          <a href="https://www.linkedin.com/in/rohan-prusty-7b9485311/" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Linkedin</a>
+          <a href="https://github.com/rohanprusty" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Github</a>
         </div>
 
         <p className="text-sm text-gray-600">
-          © {new Date().getFullYear()} Conversa AI. All rights reserved.
+          © {new Date().getFullYear()}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500"> - Built By - Rohan Prusty </span>
         </p>
       </div>
     </footer>

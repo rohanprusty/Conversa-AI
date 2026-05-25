@@ -24,7 +24,9 @@ export const getAssistantConfig = async (req, res) => {
 
 export const askAssistant = async (req, res) => {
     try {
+        console.log("\n--- NEW REQUEST RECEIVED ---");
         const { message, agentId } = req.body
+        console.log("4. BACKEND RECEIVED AGENT ID:", agentId);
 
         if (!message || !agentId) {
             return res.status(400).json({ message: "Message and AgentId are required" })
@@ -32,6 +34,7 @@ export const askAssistant = async (req, res) => {
 
         const agent = await Agent.findById(agentId).populate('userId', 'plan totalMessages requestLimit proExpiresAt enableNavigation pages').lean()
 
+        console.log("5. MONGODB RESULT:", agent ? "Agent Found" : "AGENT NOT FOUND IN DB!");
         if (!agent) {
             return res.status(404).json({ message: "Agent is not found" })
         }
@@ -60,10 +63,11 @@ export const askAssistant = async (req, res) => {
         if (agent.smartNavigations && agent.smartNavigations.length > 0) {
             const rulesList = agent.smartNavigations.map(nav => `- ${nav.name} (${nav.path}): trigger keywords: ${nav.keywords.join(", ")}`).join("\n");
             navigationRulesPrompt = `
-You can navigate the user to these pages:
+Here are the user's navigation rules:
 ${rulesList}
-CRITICAL RULE: If the user asks to go to a page, you MUST reply with a conversational confirmation AND the exact exact path in brackets. 
-Format: 'Taking you to the dashboard now. [NAVIGATE:/dashboard]'
+CRITICAL INSTRUCTION: Look at the path for the requested action. 
+- If the path starts with a slash (e.g., '/dashboard'), reply with: 'Taking you there. [NAVIGATE:/dashboard]'
+- If the path starts with a hashtag (e.g., '#pricing'), reply with: 'Scrolling to that section. [SCROLL:#pricing]'
 `;
         }
 
@@ -84,6 +88,7 @@ User Question:
 ${message}
 `;
 
+     console.log("6. SENDING TO GEMINI. System Prompt Length:", agent.systemPrompt ? agent.systemPrompt.length : 0);
      const aiResponse = await generateGeminiResponse({prompt ,apikey: agent.geminiApiKey, userId: user._id })
 
     if(user.plan === "free"){
@@ -95,19 +100,19 @@ ${message}
             });
 
     } catch (error) {
+        console.error("CRITICAL BACKEND ERROR:", error);
 
-        console.log(error)
-
-        let message = "AI processing failed";
         if (error.message.includes("429") || error.message.toLowerCase().includes("quota")) {
-             message = "I am receiving too many requests right now. Please wait a few seconds and try again.";
+            return res.status(429).json({ message: "Google API Quota Exceeded. You need a new key." });
+        }
+        if (error.message.includes("API key not valid")) {
+            return res.status(401).json({ message: "Invalid Gemini API Key." });
         }
 
-        return  res.status(500).json({
-                success: false,
-                message: message,
-            });
-
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Internal Server Error",
+        });
     }
 }
 

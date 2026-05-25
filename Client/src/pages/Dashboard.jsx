@@ -81,18 +81,12 @@ const Dashboard = () => {
                 <p className="text-gray-400 text-sm">Created: {new Date(agent.createdAt).toLocaleDateString()}</p>
               </div>
 
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 <button 
                   onClick={() => navigate(`/builder/${agent._id}`)} 
                   className="bg-white/10 hover:bg-white/20 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
                   Edit
-                </button>
-                <button 
-                  onClick={() => navigate(`/history/${agent._id}`)} 
-                  className="bg-white/10 hover:bg-white/20 py-2 rounded-lg text-sm font-medium transition-colors"
-                >
-                  History
                 </button>
                 <button 
                   onClick={() => deleteAssistant(agent._id)} 

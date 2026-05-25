@@ -158,3 +158,9 @@ body {
   --mouse-x: 50%;
   --mouse-y: 50%;
 }
+
+/* Hide scrollbar completely */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}

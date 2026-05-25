@@ -1,6 +1,28 @@
 (function() {
+    console.log("1. WIDGET LOADED: Looking for Agent ID...");
+    
+    function extractAgentId() {
+        if (document.currentScript && document.currentScript.getAttribute('data-agent-id')) {
+            return document.currentScript.getAttribute('data-agent-id');
+        }
+        const namedScript = document.querySelector('script[src*="assistant.js"]');
+        if (namedScript && namedScript.getAttribute('data-agent-id')) {
+            return namedScript.getAttribute('data-agent-id');
+        }
+        const anyScript = document.querySelector('script[data-agent-id]');
+        if (anyScript) return anyScript.getAttribute('data-agent-id');
+        return null;
+    }
+    
+    const agentId = extractAgentId();
+    console.log("2. EXTRACTED ID:", agentId);
+    
+    if (!agentId) {
+        console.error("%cFATAL ERROR: No data-agent-id found in script tag!", "color: red; font-size: 20px; font-weight: bold;");
+        return;
+    }
+    
     const script = document.currentScript || document.querySelector('script[src*="assistant.js"]');
-    const agentId = script?.dataset?.agentId;
     
     let isDev = false;
     let baseUrl = '';

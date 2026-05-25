@@ -253,6 +253,7 @@ const Builder = () => {
                   Smart Navigation
                 </h2>
                 <p className='text-sm text-gray-400 mt-2 pl-11'>Train AI to redirect users to specific pages.</p>
+                <p className='text-sm text-gray-400 mt-1 pl-11'>For full pages, enter a path like '/about'. For scrolling to sections on the same page, enter an ID like '#pricing'.</p>
               </div>
             </div>
 

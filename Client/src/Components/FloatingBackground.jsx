@@ -6,14 +6,6 @@ const Particles = lazy(() => import('./Particles'));
 const FloatingBackground = () => {
   return (
     <div className="fixed inset-0 overflow-hidden z-0 pointer-events-none bg-[#040816]">
-      {/* Base Cosmic Image: z-0 */}
-      <div
-        className="absolute inset-0 bg-cover bg-center scale-105 z-0"
-        style={{
-          backgroundImage: "url('/Background.png')",
-        }}
-      />
-
       {/* Dark Radial Overlay Gradients: z-10 */}
       <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,rgba(4,8,22,0.4)_0%,rgba(4,8,22,0.95)_100%)]" />
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-[#040816]/50 to-[#040816]" />
