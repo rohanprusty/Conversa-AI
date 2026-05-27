@@ -11,6 +11,7 @@
     <a href="#-installation"><b>Quick Start</b></a> •
     <a href="#-architecture-overview"><b>Read Architecture</b></a>
   </p>
+ video : https://github.com/user-attachments/assets/9845f139-0304-4164-9762-9629a45fe0ec
 
 </div>
 
