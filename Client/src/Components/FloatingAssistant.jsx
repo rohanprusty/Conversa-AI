@@ -11,6 +11,8 @@ export default function FloatingAssistant({ agentId }) {
   const [isDuplicate, setIsDuplicate] = useState(false);
   
   useEffect(() => {
+    if (!agentId) return;
+    
     if (window.__conversa_assistant_mounted__) {
       setIsDuplicate(true);
       return;
@@ -19,7 +21,7 @@ export default function FloatingAssistant({ agentId }) {
     return () => {
       window.__conversa_assistant_mounted__ = false;
     };
-  }, []);
+  }, [agentId]);
 
   useEffect(() => {
     if (agentId) {
