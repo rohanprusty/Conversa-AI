@@ -322,7 +322,7 @@ export default function FloatingAssistant({ agentId }) {
               left: ctaLeft,
               top: ctaTop
             }}
-            className="hidden sm:flex items-center gap-2 bg-[#0B1020]/90 backdrop-blur-md border border-cyan-500/30 text-white px-5 py-3 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.2)] pointer-events-auto whitespace-nowrap"
+            className="hidden sm:flex items-center gap-2 theme-input-bg backdrop-blur-md border theme-border theme-text px-5 py-3 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.2)] pointer-events-auto whitespace-nowrap"
           >
             <span className="text-sm font-medium tracking-wide whitespace-nowrap">Let me assist you</span>
             <span className="animate-pulse">✨</span>
@@ -388,7 +388,7 @@ function OrbContent({ onClick, onMouseEnter, onMouseLeave, isSpeaking }) {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-       <div className={`absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 blur-xl opacity-60 group-hover:opacity-90 transition-opacity duration-500 pointer-events-none ${isSpeaking ? 'animate-pulse scale-110' : 'animate-pulse'}`} />
+       <div className={`absolute inset-0 blur-xl opacity-60 group-hover:opacity-90 transition-opacity duration-500 pointer-events-none ${isSpeaking ? 'animate-pulse scale-110' : 'animate-pulse'}`} style={{ backgroundColor: 'var(--conversa-accent)' }} />
        
        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 to-purple-500/10 pointer-events-none" />
        <motion.div
@@ -396,9 +396,9 @@ function OrbContent({ onClick, onMouseEnter, onMouseLeave, isSpeaking }) {
          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
        >
          {isSpeaking ? (
-           <MoreHorizontal className="w-8 h-8 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse" />
+           <MoreHorizontal className="w-8 h-8 theme-accent-text animate-pulse" />
          ) : (
-           <Sparkles className="w-10 h-10 p-2.5 text-cyan-300 bg-white/5 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)] group-hover:scale-110 group-hover:text-cyan-200 transition-all duration-300" />
+           <Sparkles className="w-10 h-10 p-2.5 theme-accent-text bg-white/5 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)] group-hover:scale-110 transition-all duration-300" />
          )}
        </motion.div>
     </motion.div>
@@ -456,7 +456,7 @@ function ExpandedPanel({ onClose, widthMotion, heightMotion, yMotion, saveState,
         onPointerDown={handleResizePointerDown}
         className="absolute top-0 right-0 w-8 h-8 z-50 cursor-nesw-resize pointer-events-auto flex items-start justify-end p-2 group"
       >
-         <div className="w-3 h-3 rounded-full bg-cyan-400/30 group-hover:bg-cyan-400/80 transition-colors shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
+         <div className="w-3 h-3 rounded-full theme-accent-bg opacity-30 group-hover:opacity-80 transition-opacity shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
       </div>
       
       <div className="relative z-10 p-6 flex flex-col items-center h-full justify-center pointer-events-none overflow-y-auto custom-scrollbar">
@@ -466,14 +466,14 @@ function ExpandedPanel({ onClose, widthMotion, heightMotion, yMotion, saveState,
            <div className="flex gap-1.5 pt-1">
              <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
              <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
-             <div className="w-2.5 h-2.5 rounded-full bg-cyan-400/80 shadow-[0_0_10px_rgba(34,211,238,0.5)] animate-pulse" />
+             <div className="w-2.5 h-2.5 rounded-full theme-accent-bg opacity-80 animate-pulse" />
            </div>
         </div>
 
         {/* Close button explicitly pointer-events-auto */}
         <button 
           onClick={onClose} 
-          className="absolute top-4 right-10 text-gray-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 rounded-full p-2 pointer-events-auto z-40"
+          className="absolute top-4 right-10 theme-text-muted hover:theme-text transition-colors bg-white/5 hover:bg-white/10 rounded-full p-2 pointer-events-auto z-40"
         >
           <X size={16} />
         </button>
@@ -485,26 +485,26 @@ function ExpandedPanel({ onClose, widthMotion, heightMotion, yMotion, saveState,
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             className={`relative w-20 h-20 mb-6 shrink-0 ${isSpeaking ? 'scale-110 transition-transform' : ''}`}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full blur-md animate-pulse" />
-            <div className="absolute inset-1.5 bg-gradient-to-br from-fuchsia-400 to-cyan-300 rounded-full shadow-[0_0_30px_rgba(192,38,211,0.6)]" />
+            <div className="absolute inset-0 rounded-full blur-md animate-pulse" style={{ backgroundColor: 'var(--conversa-accent)' }} />
+            <div className="absolute inset-1.5 rounded-full shadow-[0_0_30px_rgba(192,38,211,0.6)]" style={{ backgroundColor: 'var(--conversa-accent)' }} />
           </motion.div>
 
-          <h3 id="conversa-agent-name" className="text-xl font-bold text-white mb-2 tracking-tight text-center">
+          <h3 id="conversa-agent-name" className="text-xl font-bold theme-text mb-2 tracking-tight text-center">
             Hello! I'm {config?.user?.assistantName || "Conversa AI"}
           </h3>
-          <p className="text-sm text-gray-400 text-center mb-6 leading-relaxed max-w-[80%]">
+          <p className="text-sm theme-text-muted text-center mb-6 leading-relaxed max-w-[80%]">
             Welcome to {config?.user?.businessName || "Conversa"}.<br/>Ask anything about your website.
           </p>
 
           {/* Conversation Area */}
           <div className="flex-1 w-full flex flex-col justify-center items-center gap-4 text-center px-4 overflow-y-auto mb-4 custom-scrollbar">
             {userText && (
-              <p className="text-sm text-cyan-200 font-medium bg-cyan-500/10 px-4 py-2 rounded-2xl">
+              <p className="text-sm theme-accent-text font-medium theme-input-bg theme-border border px-4 py-2 rounded-2xl">
                 "{userText}"
               </p>
             )}
             {aiText && (
-              <p className="text-sm text-gray-300 bg-white/5 px-4 py-3 rounded-2xl border border-white/5 shadow-inner">
+              <p className="text-sm theme-text theme-input-bg theme-border border px-4 py-3 rounded-2xl shadow-inner">
                 {aiText}
               </p>
             )}
@@ -512,7 +512,7 @@ function ExpandedPanel({ onClose, widthMotion, heightMotion, yMotion, saveState,
 
           {/* Listening Indicator */}
           <div className="flex flex-col items-center gap-4 w-full mt-auto pointer-events-auto pb-2">
-            <span className={`text-[10px] font-medium uppercase tracking-widest ${isListening ? 'text-red-400 animate-pulse' : 'text-cyan-400'}`}>
+            <span className={`text-[10px] font-medium uppercase tracking-widest ${isListening ? 'text-red-400 animate-pulse' : 'theme-accent-text'}`}>
               {status}
             </span>
             
@@ -520,16 +520,16 @@ function ExpandedPanel({ onClose, widthMotion, heightMotion, yMotion, saveState,
               onClick={onMicClick}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`relative w-full max-w-[220px] h-12 rounded-full border ${isListening ? 'border-red-500/50 bg-red-500/20' : 'border-cyan-500/30 bg-cyan-500/10'} flex items-center justify-center cursor-pointer overflow-hidden group`}
+              className={`relative w-full max-w-[220px] h-12 rounded-full border ${isListening ? 'border-red-500/50 bg-red-500/20' : 'theme-border theme-input-bg'} flex items-center justify-center cursor-pointer overflow-hidden group`}
             >
-               <div className={`absolute inset-0 bg-gradient-to-r ${isListening ? 'from-red-500/20 to-orange-500/20' : 'from-cyan-500/20 to-purple-500/20'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+               <div className={`absolute inset-0 bg-gradient-to-r ${isListening ? 'from-red-500/20 to-orange-500/20' : 'from-white/5 to-white/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                <div className="flex items-center gap-3 relative z-10">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] ${isListening ? 'animate-pulse text-red-400' : ''}`}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 theme-accent-text ${isListening ? 'animate-pulse text-red-400' : ''}`}>
                     <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
                     <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
                     <line x1="12" y1="19" x2="12" y2="22"></line>
                   </svg>
-                  <span className={`text-sm font-semibold tracking-wide whitespace-nowrap ${isListening ? 'text-red-50' : 'text-cyan-50'}`}>
+                  <span className={`text-sm font-semibold tracking-wide whitespace-nowrap ${isListening ? 'text-red-50' : 'theme-text'}`}>
                     {isListening ? "Stop Listening" : "Tap to Speak"}
                   </span>
                </div>

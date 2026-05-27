@@ -165,33 +165,96 @@ body {
   background: transparent;
 }
 
-/* Conversa Widget Themes */
-.conversa-theme-dark {
-  background: rgba(11, 16, 32, 0.95);
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.8);
-  color: white;
-}
+/* Conversa Widget Themes - Using CSS Variables */
 
-.conversa-theme-neon {
-  background: black;
-  border: 2px solid #fff;
-  box-shadow: 0 0 20px #0ff, 0 0 40px #f0f;
-  color: white;
-}
-
-.conversa-theme-glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
+/* --- 1. CONVERSA LIGHT --- */
 .conversa-theme-light {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.1);
-  color: #111;
+  --conversa-bg: hsl(0, 0%, 98%);
+  --conversa-text: hsl(210, 24%, 16%);
+  --conversa-text-muted: hsl(210, 24%, 40%);
+  --conversa-accent: hsl(207, 90%, 54%);
+  --conversa-border: hsl(0, 0%, 90%);
+  --conversa-input-bg: hsl(0, 0%, 100%);
+  --conversa-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.05);
+
+  background: var(--conversa-bg);
+  color: var(--conversa-text);
+  border: 1px solid var(--conversa-border);
+  box-shadow: var(--conversa-shadow);
+  transition: all 0.3s ease;
+}
+
+/* --- 2. CONVERSA DARK --- */
+.conversa-theme-dark {
+  --conversa-bg: hsl(210, 20%, 9%);
+  --conversa-text: hsl(0, 0%, 93%);
+  --conversa-text-muted: hsl(0, 0%, 70%);
+  --conversa-accent: hsl(36, 100%, 62%);
+  --conversa-border: hsl(210, 15%, 15%);
+  --conversa-input-bg: hsl(210, 15%, 12%);
+  --conversa-shadow: 0 8px 30px hsla(0, 0%, 0%, 0.3);
+
+  background: var(--conversa-bg);
+  color: var(--conversa-text);
+  border: 1px solid var(--conversa-border);
+  box-shadow: var(--conversa-shadow);
+  transition: all 0.3s ease;
+}
+
+/* --- 3. CONVERSA GLASS --- */
+.conversa-theme-glass {
+  --conversa-bg: hsla(0, 0%, 100%, 0.03);
+  --conversa-text: hsl(0, 0%, 100%);
+  --conversa-text-muted: hsla(0, 0%, 100%, 0.7);
+  --conversa-accent: hsl(190, 90%, 65%);
+  --conversa-border: hsla(0, 0%, 100%, 0.08);
+  --conversa-input-bg: hsla(0, 0%, 100%, 0.05);
+  --conversa-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+  background: var(--conversa-bg);
+  color: var(--conversa-text);
+  border: 1px solid var(--conversa-border);
+  box-shadow: var(--conversa-shadow);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  transition: all 0.3s ease;
+}
+
+/* --- 4. CONVERSA NEON --- */
+.conversa-theme-neon {
+  --conversa-bg: hsl(0, 0%, 0%);
+  --conversa-text: hsl(0, 0%, 96%);
+  --conversa-text-muted: hsl(0, 0%, 75%);
+  --conversa-accent: hsl(187, 100%, 50%);
+  --conversa-accent-alt: hsl(300, 100%, 55%);
+  --conversa-border: hsla(187, 100%, 50%, 0.3);
+  --conversa-input-bg: hsl(0, 0%, 4%);
+  --conversa-shadow: 0 0 20px hsla(187, 100%, 50%, 0.3), 0 0 40px hsla(300, 100%, 55%, 0.2);
+
+  background: var(--conversa-bg);
+  color: var(--conversa-text);
+  border: 1px solid var(--conversa-border);
+  box-shadow: var(--conversa-shadow);
+  transition: all 0.3s ease;
+}
+
+/* Utility classes to consume variables in children */
+.conversa-widget-container .theme-text {
+  color: var(--conversa-text);
+}
+.conversa-widget-container .theme-text-muted {
+  color: var(--conversa-text-muted);
+}
+.conversa-widget-container .theme-accent-text {
+  color: var(--conversa-accent);
+}
+.conversa-widget-container .theme-accent-bg {
+  background-color: var(--conversa-accent);
+}
+.conversa-widget-container .theme-input-bg {
+  background-color: var(--conversa-input-bg);
+  border: 1px solid var(--conversa-border);
+}
+.conversa-widget-container .theme-border {
+  border-color: var(--conversa-border);
 }
