@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Play, MessageSquare, Mic, Navigation } from 'lucide-react';
+import { ArrowRight, Play, MessageSquare, Mic, Navigation, X } from 'lucide-react';
 import AnimatedButton from './AnimatedButton';
 import AssistantPreview from './AssistantPreview';
 import GlassCard from './GlassCard';
 
 const HeroSection = () => {
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isEnlarged, setIsEnlarged] = useState(false);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVideoOpen(true);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section className="relative pt-32 pb-20 px-6 z-40 min-h-screen flex flex-col justify-center">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center flex-grow">
@@ -39,7 +52,7 @@ const HeroSection = () => {
             <AnimatedButton variant="primary">
               Build Your Assistant <ArrowRight className="w-4 h-4 ml-1" />
             </AnimatedButton>
-            <AnimatedButton variant="secondary">
+            <AnimatedButton variant="secondary" onClick={() => setIsVideoOpen(true)}>
               <Play className="w-4 h-4 mr-1" /> Watch Demo
             </AnimatedButton>
           </div>
@@ -109,6 +122,67 @@ const HeroSection = () => {
           </div>
         </div>
       </motion.div>
+      {/* Video Modal Overlay */}
+      {isVideoOpen && (
+        <div 
+          className={
+            isEnlarged 
+              ? "fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" 
+              : "fixed bottom-6 right-6 w-60 h-60 z-[9999] shadow-2xl relative bg-black animate-in slide-in-from-bottom-5 fade-in duration-300 rounded-2xl border-4 border-gray-800 object-cover overflow-hidden aspect-square"
+          }
+        >
+          <div className={isEnlarged ? "w-full max-w-4xl aspect-video relative" : "w-full h-full relative"}>
+            <button
+              onClick={() => setIsVideoOpen(false)}
+              className="absolute top-3 right-3 z-50 bg-gray-900/70 text-white w-7 h-7 flex items-center justify-center rounded-full backdrop-blur-sm hover:bg-gray-900 transition cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            {isMuted && !isEnlarged && (
+              <button
+                onClick={() => setIsMuted(false)}
+                className="absolute inset-0 z-40 bg-black/50 backdrop-blur-[2px] flex flex-col items-center justify-center text-white p-4 text-center rounded-xl transition hover:bg-black/60"
+              >
+                <div className="font-bold mb-1 leading-tight">🔊 Tap to Unmute</div>
+                <div className="text-xs text-gray-200 mt-1">This demo contains AI voice interaction.</div>
+              </button>
+            )}
+            <video
+              ref={videoRef}
+              src="/demo.mp4"
+              autoPlay
+              muted={isMuted}
+              playsInline
+              loop
+              className="w-full h-full object-cover rounded-xl border border-gray-700"
+            />
+            {/* Custom Control Bar */}
+            <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center bg-black/70 backdrop-blur-md px-3 py-2 rounded-lg text-white text-sm z-50">
+              <button 
+                onClick={() => {
+                  isPlaying ? videoRef.current.pause() : videoRef.current.play();
+                  setIsPlaying(!isPlaying);
+                }}
+                className="hover:text-gray-300 transition-colors"
+              >
+                {isPlaying ? "⏸ Pause" : "▶ Play"}
+              </button>
+              <button 
+                onClick={() => setIsMuted(!isMuted)}
+                className="hover:text-gray-300 transition-colors"
+              >
+                {isMuted ? "🔇" : "🔊"}
+              </button>
+              <button 
+                onClick={() => setIsEnlarged(!isEnlarged)}
+                className="hover:text-gray-300 transition-colors"
+              >
+                {isEnlarged ? "✖ Shrink" : "⛶ Expand"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
