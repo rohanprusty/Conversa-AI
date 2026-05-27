@@ -22,7 +22,9 @@ export default function FloatingAssistant({ agentId }) {
   }, []);
 
   useEffect(() => {
-    console.log("[Conversa] React Component Mounted. Fetching data for:", agentId);
+    if (agentId) {
+      console.log("[Conversa] React Component Mounted. Fetching data for:", agentId);
+    }
   }, [agentId]);
   
   // Voice AI States
@@ -298,7 +300,7 @@ export default function FloatingAssistant({ agentId }) {
     }
   };
 
-  if (isDuplicate || !initialized) return null;
+  if (isDuplicate || !initialized || !agentId) return null;
 
   return (
     <div 

@@ -82,6 +82,8 @@ window.__vite_plugin_react_preamble_installed__ = true
             console.log("[Conversa] Running in production mode, loading bundles from:", baseUrl);
             // Production Bundle Loading
             const prodScript = document.createElement('script');
+            prodScript.type = 'module';
+            prodScript.crossOrigin = 'anonymous';
             prodScript.src = `${baseUrl}/widget-bundle.js`; 
             document.head.appendChild(prodScript);
             
