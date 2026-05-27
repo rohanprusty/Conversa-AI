@@ -46,7 +46,7 @@ export default function FloatingAssistant({ agentId }) {
   // Fetch Config
   useEffect(() => {
     if (agentId) {
-      const fetchUrl = `http://localhost:8000/api/assistant/config/${agentId}`;
+      const fetchUrl = `https://conversa-ai-backend-joxu.onrender.com/api/assistant/config/${agentId}`;
       console.log("3. FETCHING FROM:", fetchUrl);
       axios.get(fetchUrl, {
         headers: {
@@ -140,7 +140,7 @@ export default function FloatingAssistant({ agentId }) {
     }
     
     try {
-      const res = await axios.post(`http://localhost:8000/api/assistant/ask`, {
+      const res = await axios.post(`https://conversa-ai-backend-joxu.onrender.com/api/assistant/ask`, {
         message,
         agentId
       });

@@ -38,7 +38,7 @@
     }
     
     if (!baseUrl) {
-        baseUrl = 'http://localhost:5173';
+        baseUrl = 'https://conversa-ai-frontend.onrender.com';
         isDev = true;
     }
 
