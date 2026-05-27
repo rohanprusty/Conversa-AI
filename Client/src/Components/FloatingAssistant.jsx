@@ -326,7 +326,7 @@ export default function FloatingAssistant({ agentId }) {
         }}
         whileDrag={{ scale: 0.98, zIndex: 9999, boxShadow: "0 0 40px rgba(34,211,238,0.3)" }}
         style={{ x, y, width, height, borderRadius }}
-        className="absolute top-0 left-0 pointer-events-auto bg-[#0B1020]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col"
+        className={`absolute top-0 left-0 pointer-events-auto overflow-hidden flex flex-col conversa-theme-${config?.user?.theme || 'dark'}`}
       >
         <AnimatePresence mode="wait">
           {isExpanded ? (

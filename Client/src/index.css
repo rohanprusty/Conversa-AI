@@ -164,3 +164,34 @@ body {
   width: 0px;
   background: transparent;
 }
+
+/* Conversa Widget Themes */
+.conversa-theme-dark {
+  background: rgba(11, 16, 32, 0.95);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.conversa-theme-neon {
+  background: black;
+  border: 2px solid #fff;
+  box-shadow: 0 0 20px #0ff, 0 0 40px #f0f;
+  color: white;
+}
+
+.conversa-theme-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.conversa-theme-light {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.1);
+  color: #111;
+}
