@@ -1,90 +1,199 @@
-<div align="center">
-  
-# 🤖 Conversa AI
-**The Next-Generation Embeddable Voice AI Platform**
+🤖 Conversa AI
+The Next-Generation Embeddable Voice AI Platform
 
-[![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](https://vitejs.dev/)
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
+A full-stack SaaS platform that allows businesses to instantly deploy and manage an entire fleet of intelligent, voice-activated AI assistants. Built with modern web technologies, prioritizing buttery-smooth micro-interactions, robust cross-origin architecture, and dynamic state management.
 
-A full-stack SaaS platform that allows businesses to instantly deploy intelligent, voice-activated AI assistants to their websites using a single line of code. Built with modern web technologies, prioritizing buttery-smooth micro-interactions, robust cross-origin architecture, and a dynamic theming engine.
+🔗 Live Demo:
+Conversa AI Live Demo
 
-</div>
+📋 Table of Contents
+✨ Features
+🛠️ Technology Stack
+🏛️ Architecture Overview
+🚀 Installation
+🎯 Quick Start
+⚙️ Configuration
+🌍 Production Deployment
+🤝 Contributing
+📄 License
+🔮 Roadmap
+✨ Features
+🤖 Multi-Agent Fleet Management
+Infinite Scaling: Create, edit, and manage multiple AI assistants simultaneously from a single dashboard.
+Dynamic State Isolation: Every assistant maintains its own unique configuration including:
+Name
+Persona
+Theme
+Token Limits
 
----
+Changes made from the dashboard instantly reflect in the live widget without replacing the embed code.
 
-## ✨ Elite Engineering Highlights
+🔌 One-Line Integration
+Frictionless Setup: Users only need to paste a single <script> tag into their website.
+The AI widget securely bootstraps itself without interfering with the host site's CSS or DOM structure.
+🎙️ Voice & Navigation Engine
+Real-Time Voice Interaction: Powered by the Web Speech API for smooth voice-to-text communication.
+Smart Navigation: The assistant can intelligently redirect users to relevant pages on the host website through conversational context.
+🎨 Elite Theming & UI/UX
+Dynamic CSS Variable Theming: Supports premium themes including:
+Glass
+Neon
+Dark
+Light
+Framer Motion Animations: Smooth 60fps spring animations, glowing effects, and draggable assistant panels with persistent positions using localStorage.
+🛡️ Isolated Widget Architecture
+Cross-Origin Resiliency: Custom Vite/Rollup bundling generates a single stable widget-bundle.js file, eliminating:
+Chunk-loading failures
+CORB issues
+Cross-domain asset problems
+🛠️ Technology Stack
+Frontend (Dashboard & Widget)
+Framework: React 19 + Vite
+Styling: Tailwind CSS v4
+Animations: Framer Motion
+State Management: React Hooks + Context API
+Backend (API Server)
+Runtime: Node.js + Express.js
+Database: MongoDB with Mongoose
+Authentication: JWT + HTTP-Only Cookies
+Payments: Razorpay Integration
+🏛️ Architecture Overview
 
-Building an embeddable widget SaaS presents unique engineering challenges compared to standard web apps. Conversa AI tackles these head-on:
+Conversa AI follows a multi-stage injection architecture for maximum stability on external websites.
 
-- **Isolated Widget Architecture:** Custom Vite/Rollup configuration to compile the React widget into a single, predictable ES module (`widget-bundle.js`) alongside a unified CSS payload. This eliminates cross-domain chunking errors (404s) and CORB issues when injected into third-party host sites.
-- **Cross-Origin Resource Sharing (CORS) Mastery:** Securely engineered backend endpoints to allow dynamic script injection and API communication from any host domain while protecting the core dashboard API.
-- **Dynamic CSS Variable Theming:** A highly scalable structural color system utilizing HSL variables. The widget seamlessly transitions between beautifully curated themes (*Light, Dark, Glass, Neon*) without needing to swap hardcoded utility classes.
-- **Fluid UI/UX:** Leveraging **Framer Motion** for 60fps spring-physics animations, draggable elements, and expanding panels. The UI is designed to feel "alive" with glowing orbs, pulsating microphone indicators, and smooth layout transitions.
-- **Monetization Ready:** Fully integrated with **Razorpay** for subscription management and billing.
+1️⃣ Loader (assistant.js)
 
-## 🚀 Core Features
+A lightweight JavaScript loader that:
 
-* **One-Line Integration:** Users just paste `<script src="conversa/assistant.js" data-agent-id="..."></script>` into their HTML.
-* **Voice-to-Text & Text-to-Speech:** Integrated Web Speech API for real-time voice recognition and natural language audio responses.
-* **Intelligent Website Navigation:** The AI can autonomously navigate users to different pages on the host website or smoothly scroll to specific elements based on conversation context.
-* **Custom SaaS Dashboard:** A beautiful client portal featuring smooth scrolling (Lenis), protected routes, authentication (JWT/Firebase), and agent customization tools.
-* **Persistent State:** The floating widget remembers its dragged coordinates and expanded state across page reloads using `localStorage`.
+Reads the data-agent-id
+Creates a container/shadow root
+Injects the React widget dynamically
+2️⃣ Bundler (Vite)
 
----
+Custom vite.config.js ensures:
 
-## 🛠️ Technology Stack
+Stable build outputs
+No random chunk hashes
+Reliable widget loading without 404 issues
+3️⃣ Widget Component (FloatingAssistant.jsx)
 
-### Frontend (Dashboard & Widget)
-* **Framework:** React 19 + Vite
-* **Styling:** Tailwind CSS v4
-* **Animations:** Framer Motion
-* **Scroll Engine:** Lenis (Smooth scrolling for the dashboard)
-* **Icons:** Lucide React
-* **State Management:** React Hooks + Context
+The React widget:
 
-### Backend (API Server)
-* **Runtime:** Node.js + Express
-* **Database:** MongoDB (Mongoose)
-* **Authentication:** JSON Web Tokens (JWT) + HTTP-Only Cookies
-* **Payment Gateway:** Razorpay integration
-
----
-
-## 🏗️ Architecture Overview: The Embed Pipeline
-
-1. **The Loader (`assistant.js`):** A lightweight vanilla JavaScript file loaded onto the client's website. It detects the host environment, extracts the `data-agent-id`, creates a shadow container, and dynamically injects the React ES Module bundles via absolute URLs.
-2. **The Bundler (Vite):** A custom `vite.config.js` strips away random chunk hashes for the widget entry point, ensuring the loader always requests the exact `widget-bundle.js` and `widget-bundle.css`.
-3. **The Component (`FloatingAssistant.jsx`):** A React application bootstrapped inside the host website. It immediately fetches its specific configuration (Theme, AI Persona) from the Express API and mounts the interactive UI.
-
----
-
-## 💻 Local Development Setup
-
-Clone the repository and install dependencies for both the Client and Server:
-
-```bash
-git clone https://github.com/rohanprusty/Conversa-AI.git
-cd Conversa-AI
-
-# 1. Setup Backend
+Fetches assistant-specific configurations
+Loads theme/persona dynamically
+Mounts the interactive floating assistant UI
+🚀 Installation
+1️⃣ Backend Setup
 cd Server
 npm install
-# Create a .env file with your MongoDB URI, JWT Secret, and Razorpay Keys
 npm run dev
-
-# 2. Setup Frontend
-cd ../Client
+2️⃣ Frontend Setup
+cd Client
 npm install
-# Create a .env file with your API URL
 npm run dev
-```
+🎯 Quick Start
 
----
+Get your AI assistant live in 3 simple steps:
 
-<div align="center">
-  <i>Designed and engineered with passion by <a href="https://github.com/rohanprusty">Rohan Prusty</a></i>
-</div>
+1️⃣ Create an Assistant
+Register on the dashboard
+Click "+ Create New Assistant"
+Configure:
+Name
+Personality
+Theme
+2️⃣ Customize the UI
+
+Choose from premium themes:
+
+Glass
+Neon
+Dark
+Light
+3️⃣ Embed the Widget
+
+Paste this snippet before the closing </body> tag of your website:
+
+<script 
+  src="https://conversa-ai-frontend.onrender.com/assistant.js"
+  data-agent-id="YOUR_UNIQUE_AGENT_ID">
+</script>
+⚙️ Configuration
+
+Create .env files in both the Server and Client directories.
+
+Server .env
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_super_secret_key
+
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+Client .env
+VITE_API_URL=http://localhost:5000/api
+🌍 Production Deployment
+Frontend Deployment
+
+Deploy using:
+
+Vercel
+Render
+
+⚠️ Important:
+Configure your hosting provider to return:
+
+Access-Control-Allow-Origin: *
+
+for all static assets.
+
+Backend Deployment
+
+Deploy using:
+
+Render
+AWS
+Railway
+
+⚠️ Important:
+Ensure Express CORS middleware allows cross-origin requests:
+
+origin: "*"
+HTTPS Requirement
+
+The Web Speech API requires a secure HTTPS environment.
+
+On non-HTTPS domains:
+
+Microphone functionality will automatically be disabled.
+🤝 Contributing
+
+Contributions are welcome!
+
+Steps
+# Fork the repository
+
+# Create a feature branch
+git checkout -b feature/AmazingFeature
+
+# Commit your changes
+git commit -m "Add AmazingFeature"
+
+# Push to GitHub
+git push origin feature/AmazingFeature
+
+Then open a Pull Request 🚀
+
+📄 License
+
+Distributed under the MIT License.
+See the LICENSE file for more information.
+
+🔮 Roadmap
+ Custom Knowledge Base (RAG Integration)
+ PDF & Website Training Support
+ Analytics Dashboard
+ Multi-Language Support
+ Trigger-Based Widget Opening
+ AI Conversation History
+ Team Collaboration Features
+ Advanced SaaS Billing Plans
