@@ -16,7 +16,7 @@ import FloatingBackground from './Components/FloatingBackground'
 import MouseGlow from './Components/MouseGlow'
 import Lenis from 'lenis'
 
-export const ServerUrl = "http://localhost:8000"
+export const ServerUrl = "https://conversa-ai-backend-joxu.onrender.com"
 export const CLIENT_URL = "http://localhost:5173"
 
 function ScrollToTop() {
