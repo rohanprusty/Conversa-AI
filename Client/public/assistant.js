@@ -1,5 +1,6 @@
 (function() {
-    console.log("1. WIDGET LOADED: Looking for Agent ID...");
+    console.log("[Conversa] Script initialized");
+    console.log("[Conversa] WIDGET LOADED: Looking for Agent ID...");
     
     function extractAgentId() {
         if (document.currentScript && document.currentScript.getAttribute('data-agent-id')) {
@@ -15,10 +16,10 @@
     }
     
     const agentId = extractAgentId();
-    console.log("2. EXTRACTED ID:", agentId);
+    console.log("[Conversa] Found Agent ID:", agentId);
     
     if (!agentId) {
-        console.error("%cFATAL ERROR: No data-agent-id found in script tag!", "color: red; font-size: 20px; font-weight: bold;");
+        console.error("[Conversa] FATAL ERROR: No data-agent-id found in script tag!");
         return;
     }
     
@@ -42,47 +43,54 @@
         isDev = true;
     }
 
-    // Ensure container exists
-    if (!document.getElementById('conversa-widget-root')) {
-        const container = document.createElement('div');
-        container.id = 'conversa-widget-root';
-        if(agentId) container.dataset.agentId = agentId;
-        document.body.appendChild(container);
-    }
+    try {
+        // Ensure container exists
+        if (!document.getElementById('conversa-widget-root')) {
+            const container = document.createElement('div');
+            container.id = 'conversa-widget-root';
+            if(agentId) container.dataset.agentId = agentId;
+            document.body.appendChild(container);
+            console.log("[Conversa] Created container element");
+        }
 
-    if (isDev) {
-        // Required for Vite React Refresh
-        const reactRefresh = document.createElement('script');
-        reactRefresh.type = 'module';
-        reactRefresh.innerHTML = `
+        if (isDev) {
+            console.log("[Conversa] Running in development mode");
+            // Required for Vite React Refresh
+            const reactRefresh = document.createElement('script');
+            reactRefresh.type = 'module';
+            reactRefresh.innerHTML = `
 import RefreshRuntime from "${baseUrl}/@react-refresh"
 RefreshRuntime.injectIntoGlobalHook(window)
 window.$RefreshReg$ = () => {}
 window.$RefreshSig$ = () => (type) => type
 window.__vite_plugin_react_preamble_installed__ = true
 `;
-        document.head.appendChild(reactRefresh);
+            document.head.appendChild(reactRefresh);
 
-        // Load Vite Client
-        const viteClient = document.createElement('script');
-        viteClient.type = 'module';
-        viteClient.src = `${baseUrl}/@vite/client`;
-        document.head.appendChild(viteClient);
+            // Load Vite Client
+            const viteClient = document.createElement('script');
+            viteClient.type = 'module';
+            viteClient.src = `${baseUrl}/@vite/client`;
+            document.head.appendChild(viteClient);
 
-        // Load Widget JSX
-        const widgetScript = document.createElement('script');
-        widgetScript.type = 'module';
-        widgetScript.src = `${baseUrl}/src/widget.jsx`;
-        document.head.appendChild(widgetScript);
-    } else {
-        // Production Bundle Loading
-        const prodScript = document.createElement('script');
-        prodScript.src = `${baseUrl}/widget-bundle.js`; 
-        document.head.appendChild(prodScript);
-        
-        const prodStyle = document.createElement('link');
-        prodStyle.rel = 'stylesheet';
-        prodStyle.href = `${baseUrl}/widget-bundle.css`;
-        document.head.appendChild(prodStyle);
+            // Load Widget JSX
+            const widgetScript = document.createElement('script');
+            widgetScript.type = 'module';
+            widgetScript.src = `${baseUrl}/src/widget.jsx`;
+            document.head.appendChild(widgetScript);
+        } else {
+            console.log("[Conversa] Running in production mode, loading bundles from:", baseUrl);
+            // Production Bundle Loading
+            const prodScript = document.createElement('script');
+            prodScript.src = `${baseUrl}/widget-bundle.js`; 
+            document.head.appendChild(prodScript);
+            
+            const prodStyle = document.createElement('link');
+            prodStyle.rel = 'stylesheet';
+            prodStyle.href = `${baseUrl}/widget-bundle.css`;
+            document.head.appendChild(prodStyle);
+        }
+    } catch (error) {
+        console.error("[Conversa] Injection failed:", error);
     }
 })();

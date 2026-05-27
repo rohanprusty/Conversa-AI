@@ -20,6 +20,10 @@ export default function FloatingAssistant({ agentId }) {
       window.__conversa_assistant_mounted__ = false;
     };
   }, []);
+
+  useEffect(() => {
+    console.log("[Conversa] React Component Mounted. Fetching data for:", agentId);
+  }, [agentId]);
   
   // Voice AI States
   const [config, setConfig] = useState(null);
@@ -47,18 +51,25 @@ export default function FloatingAssistant({ agentId }) {
   useEffect(() => {
     if (agentId) {
       const fetchUrl = `https://conversa-ai-backend-joxu.onrender.com/api/assistant/config/${agentId}`;
-      console.log("3. FETCHING FROM:", fetchUrl);
-      axios.get(fetchUrl, {
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        }
-      })
-        .then(res => {
+      console.log("[Conversa] FETCHING FROM:", fetchUrl);
+      
+      const fetchConfig = async () => {
+        try {
+          const res = await axios.get(fetchUrl, {
+            headers: {
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          });
           setConfig(res.data);
-        })
-        .catch(err => console.error("Error fetching config:", err));
+          console.log("[Conversa] Config fetched successfully");
+        } catch (error) {
+          console.error("[Conversa] Backend Fetch Error:", error);
+        }
+      };
+      
+      fetchConfig();
     }
   }, [agentId]);
 
@@ -181,7 +192,7 @@ export default function FloatingAssistant({ agentId }) {
 
       speak(cleanedText);
     } catch (error) {
-      console.error("7. FATAL FRONTEND ERROR:", error);
+      console.error("[Conversa] Backend Fetch Error:", error);
       const errorMessage = error.response?.data?.message || error.response?.data?.error || "NETWORK ERROR: Backend offline or CORS blocking.";
       setStatus("ERROR: " + errorMessage);
     }
