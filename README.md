@@ -177,6 +177,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 * [ ] **Multi-Language Support:** Auto-detect browser language and respond with localized text-to-speech models.
 * [ ] **Trigger Events:** Auto-open the widget based on scroll percentage or exit-intent.
 
-```
-
-```
