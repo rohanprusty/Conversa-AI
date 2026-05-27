@@ -77,6 +77,8 @@ export default function FloatingAssistant({ agentId }) {
 
   // Speech Setup
   useEffect(() => {
+    if (!agentId) return;
+    
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
