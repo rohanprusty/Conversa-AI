@@ -1,5 +1,5 @@
 # 1. Use the official Node.js image as our base operating system
-FROM node:18-alpine
+FROM node:22-alpine
 
 # 2. Set the working directory inside the container
 WORKDIR /app
