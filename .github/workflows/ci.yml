@@ -1,31 +1,32 @@
-name: Conversa AI CI Pipeline
+name: Conversa AI CI/CD Pipeline
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
+    - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Setup Node.js (Upgraded to Node 22)
-      uses: actions/setup-node@v4
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
       with:
-        node-version: '22'
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Install Server Dependencies
-      run: |
-        cd Server
-        npm install
+    - name: Build and Push Backend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./Server
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/conversa-backend:latest
 
-    - name: Install Client Dependencies & Build
-      run: |
-        cd Client
-        npm install
-        npm run build
+    - name: Build and Push Frontend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./Client
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/conversa-frontend:latest
