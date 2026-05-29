@@ -32,6 +32,8 @@ jobs:
         tags: hustler2028/conversa-frontend:latest
         build-args: |
           VITE_API_URL=https://conversa-api-docker.onrender.com
+          VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_RAZORPAY_KEY_ID=${{ secrets.VITE_RAZORPAY_KEY_ID }}
 
     - name: Trigger Render Deployment
       run: |
