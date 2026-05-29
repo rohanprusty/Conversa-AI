@@ -54,7 +54,7 @@ export default function FloatingAssistant({ agentId }) {
   // Fetch Config
   useEffect(() => {
     if (agentId) {
-      const fetchUrl = `https://conversa-ai-backend-joxu.onrender.com/api/assistant/config/${agentId}`;
+      const fetchUrl = `https://conversa-api-docker.onrender.com/api/assistant/config/${agentId}`;
       console.log("[Conversa] FETCHING FROM:", fetchUrl);
       
       const fetchConfig = async () => {
@@ -157,7 +157,7 @@ export default function FloatingAssistant({ agentId }) {
     }
     
     try {
-      const res = await axios.post(`https://conversa-ai-backend-joxu.onrender.com/api/assistant/ask`, {
+      const res = await axios.post(`https://conversa-api-docker.onrender.com/api/assistant/ask`, {
         message,
         agentId
       });
