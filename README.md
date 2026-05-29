@@ -7,7 +7,7 @@
   <p><i>A full-stack SaaS platform that allows businesses to instantly deploy and manage an entire fleet of intelligent, voice-activated AI assistants.</i></p>
 
   <p>
-    <a href="https://conversa-ai-frontend.onrender.com"><b>View Live Demo</b></a> •
+    <a href="https://conversa-app.onrender.com/"><b>View Live Demo</b></a> •
     <a href="#-installation"><b>Quick Start</b></a> •
     <a href="#-architecture-overview"><b>Read Architecture</b></a>
   </p>
