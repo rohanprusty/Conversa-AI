@@ -15,10 +15,9 @@ import logRouter from "./Routes/log.route.js"
 const app = express()
 
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://conversa-app.onrender.com"
-  ],
+  origin: function (origin, callback) {
+    callback(null, true);
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
