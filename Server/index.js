@@ -17,7 +17,7 @@ const privateCors =
   cors({
 
     origin: [
-      "https://conversa-ai-frontend.onrender.com"
+      "https://conversa-app.onrender.com"
     ],
 
     credentials: true
