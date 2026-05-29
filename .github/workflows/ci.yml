@@ -30,3 +30,8 @@ jobs:
         context: ./Client
         push: true
         tags: hustler2028/conversa-frontend:latest
+
+    - name: Trigger Render Deployment
+      run: |
+        curl -X GET ${{ secrets.RENDER_BACKEND_HOOK }}
+        curl -X GET ${{ secrets.RENDER_FRONTEND_HOOK }}
