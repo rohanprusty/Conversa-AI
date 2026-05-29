@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: 'https://conversa-ai-frontend.onrender.com/',
+  base: 'https://conversa-app.onrender.com/',
   build: {
     cssCodeSplit: false,
     rollupOptions: {

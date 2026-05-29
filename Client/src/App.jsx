@@ -17,7 +17,7 @@ import MouseGlow from './Components/MouseGlow'
 import Lenis from 'lenis'
 
 export const ServerUrl = "https://conversa-ai-backend-joxu.onrender.com"
-export const CLIENT_URL = "https://conversa-ai-frontend.onrender.com"
+export const CLIENT_URL = "https://conversa-app.onrender.com"
 
 function ScrollToTop() {
   const { pathname } = useLocation();

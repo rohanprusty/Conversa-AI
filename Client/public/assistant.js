@@ -39,7 +39,7 @@
     }
     
     if (!baseUrl) {
-        baseUrl = 'https://conversa-ai-frontend.onrender.com';
+        baseUrl = 'https://conversa-app.onrender.com';
         isDev = true;
     }
 
