@@ -23,7 +23,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 
 app.use(express.json())
 app.use(cookieParser())
@@ -41,7 +41,7 @@ app.use("/api/billing", billingRouter)
 app.use("/api/assistant", assistantRouter)
 app.use("/api/agents", agentRouter)
 app.use("/api/logs", logRouter)
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000
 app.listen(PORT , ()=>{
     console.log(`Server Started on Port ${PORT}`)
     connectDB()
