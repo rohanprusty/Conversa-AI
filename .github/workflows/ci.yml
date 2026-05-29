@@ -30,6 +30,8 @@ jobs:
         context: ./Client
         push: true
         tags: hustler2028/conversa-frontend:latest
+        build-args: |
+          VITE_API_URL=https://conversa-api-docker.onrender.com
 
     - name: Trigger Render Deployment
       run: |
