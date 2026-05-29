@@ -13,21 +13,18 @@ import logRouter from "./Routes/log.route.js"
 
 
 const app = express()
-const privateCors =
-  cors({
 
-    origin: [
-      "https://conversa-app.onrender.com"
-    ],
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://conversa-app.onrender.com"
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
 
-    credentials: true
-
-  });
-
-  const publicCors =
-  cors({
-    origin: "*",
-  });
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json())
 app.use(cookieParser())
@@ -38,13 +35,13 @@ app.get("/" , (req,res)=>{
     res.json("Hello from Server")
 })
 
-app.use("/api/auth",privateCors , authRouter)
-app.use("/api/user",privateCors , userRouter)
-app.use("/api/billing",privateCors , billingRouter)
+app.use("/api/auth", authRouter)
+app.use("/api/user", userRouter)
+app.use("/api/billing", billingRouter)
 
-app.use("/api/assistant",publicCors , assistantRouter)
-app.use("/api/agents", privateCors, agentRouter)
-app.use("/api/logs", privateCors, logRouter)
+app.use("/api/assistant", assistantRouter)
+app.use("/api/agents", agentRouter)
+app.use("/api/logs", logRouter)
 const PORT = process.env.PORT
 app.listen(PORT , ()=>{
     console.log(`Server Started on Port ${PORT}`)
